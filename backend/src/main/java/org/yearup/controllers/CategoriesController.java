@@ -14,6 +14,8 @@ import java.util.List;
 // add the annotation to make this controller the endpoint for the following url
     // http://localhost:8080/categories
 // add annotation to allow cross site origin requests
+//method can still be"@RequestMapping(path="/customers",method=RequestMethod.GET)"
+//it is outdated and springboot understandings it bothways
 @RestController
 @RequestMapping("/categories")
 @CrossOrigin
@@ -22,7 +24,7 @@ public class CategoriesController
     private CategoryDao categoryDao;
     private ProductDao productDao;
 
-
+    //COMPLETED
     // create an Autowired controller to inject the categoryDao and ProductDao
     @Autowired
     public CategoriesController(CategoryDao categoryDao, ProductDao productDao) {
@@ -31,6 +33,7 @@ public class CategoriesController
     }
 
     // add the appropriate annotation for a get action
+    @GetMapping
     public List<Category> getAll()
     {
         // find and return all categories
@@ -38,6 +41,7 @@ public class CategoriesController
     }
 
     // add the appropriate annotation for a get action
+    @GetMapping("/{id}")
     public Category getById(@PathVariable int id)
     {
         // get the category by id
