@@ -41,7 +41,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
     @Override
     public Category getById(int categoryId) {
-        String query = "SELECT * FROM categories WHERE category_id = ?";
+        String query = "SELECT * FROM categories WHERE category_id = ?;";
         /*
         If a matching row is found
         it constructs and returns a Category object, otherwise it returns null.
@@ -71,21 +71,25 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public Category create(Category category) {
         //Prepares an INSERT statement with name and description values.
-        String query = "INSERT INTO categories (name, description) VALUES (?, ?)";
+        String query = "INSERT INTO categories (name, description) VALUES (?, ?);";
+
         try(Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS))
         {
             statement.setString(1, category.getName());
             statement.setString(2, category.getDescription());
+            //executes insert command and returns how many rows are affected
             int rowsCreated = statement.executeUpdate();
 
             if(rowsCreated > 0) {
+                //After a successful INSERT this grabs any auto-generated keys(auto-incremented category_id)
                 ResultSet generatedKeys = statement.getGeneratedKeys();
                 if(generatedKeys.next()) {
                     int newId = generatedKeys.getInt(1);
                     category.setCategoryId(newId);
                 }
-                generatedKeys.close();
+                //not really necessary since auto closes
+                //generatedKeys.close();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -96,7 +100,18 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public void update(int categoryId, Category category)
     {
-        // update category
+        String query = "UPDATE categories SET name = ?, description = ? WHERE category_id = ?;";
+
+        try(Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, category.getName());
+            statement.setString(2, category.getDescription());
+            statement.setInt(3, categoryId);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
