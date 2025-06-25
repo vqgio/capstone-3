@@ -5,18 +5,13 @@ import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 {
-    //private final DataSource dataSource;
-
     public MySqlCategoryDao(DataSource dataSource)
     {
         super(dataSource);
@@ -45,10 +40,32 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
     @Override
-    public Category getById(int categoryId)
-    {
-        // get category by id
-        return null;
+    public Category getById(int categoryId) {
+        String query = "SELECT * FROM categories WHERE category_id = ?";
+        /*
+        If a matching row is found
+        it constructs and returns a Category object, otherwise it returns null.
+        Create an instance of category
+        If there’s a category row that matches the ID...
+        create a Category object and fill it with data from that row.
+         */
+        Category category = null;
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query))
+        {
+            statement.setInt(1, categoryId);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()) {
+                category = new Category();
+                category.setCategoryId(resultSet.getInt("category_id"));
+                category.setName(resultSet.getString("name"));
+                category.setDescription(resultSet.getString("description"));
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return category;
     }
 
     @Override
