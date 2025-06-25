@@ -105,7 +105,7 @@ function setMinPrice(control)
 
 function setMaxPrice(control)
 {
-    // const slider = document.getElementById("min-price");
+    // const slider = document.getElementById("max-price");
     const label = document.getElementById("max-price-display")
     label.innerText = control.value;
 
