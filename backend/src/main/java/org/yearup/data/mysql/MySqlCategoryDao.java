@@ -78,7 +78,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         {
             statement.setString(1, category.getName());
             statement.setString(2, category.getDescription());
-            //executes insert command and returns how many rows are affected
+            //executes the insert command and returns how many rows are affected
             int rowsCreated = statement.executeUpdate();
 
             if(rowsCreated > 0) {
