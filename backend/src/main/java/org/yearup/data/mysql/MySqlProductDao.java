@@ -22,7 +22,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
     public List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String color)
     {
         List<Product> products = new ArrayList<>();
-
+        //max price functions properly.
         String sql = "SELECT * FROM products " +
                 "WHERE (category_id = ? OR ? = -1) " +
                 "   AND (price >= ? OR ? = -1) " +
