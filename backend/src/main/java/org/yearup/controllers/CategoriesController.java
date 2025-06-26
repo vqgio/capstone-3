@@ -1,6 +1,7 @@
 package org.yearup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.data.CategoryDao;
@@ -43,10 +44,14 @@ public class CategoriesController
 
     // add the appropriate annotation for a get action
     @GetMapping("/{id}")
-    public Category getById(@PathVariable int id)
+    public ResponseEntity<Category> getById(@PathVariable int id)
     {
         // get the category by id
-        return categoryDao.getById(id);
+        Category category =  categoryDao.getById(id);
+        if (category == null)
+            return ResponseEntity.notFound().build();
+        else
+            return ResponseEntity.ok(category);
     }
 
     // the url to return all products in category 1 would look like this
@@ -64,8 +69,7 @@ public class CategoriesController
     @Secured("ROLE_ADMIN")
     public Category addCategory(@RequestBody Category category)
     {
-        // insert the category
-        return null;
+        return categoryDao.create(category);
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
@@ -74,7 +78,7 @@ public class CategoriesController
     @Secured("ROLE_ADMIN")
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
     {
-        // update the category by id
+        categoryDao.update(id, category);
     }
 
 
@@ -84,5 +88,6 @@ public class CategoriesController
     public void deleteCategory(@PathVariable int id)
     {
         // delete the category by id
+        categoryDao.delete(id);
     }
 }
