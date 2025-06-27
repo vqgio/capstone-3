@@ -4,7 +4,7 @@ Full-Stack Application
 
 ## Overview
 
-capstone-3 is a full-stack web application developed as the final project for the LTCA program. It features a Java Spring Boot backend and a JavaScript frontend, offering user registration, authentication, and an e-commerce experience including product browsing, cart management, and user profiles.
+Easy Shop is a full-stack web application developed as the final project for the LTCA program. It features a Java Spring Boot backend and a JavaScript frontend, offering user registration, authentication, and an e-commerce experience including product browsing, cart management, and user profiles.
 
 ## Features
 
