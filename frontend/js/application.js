@@ -1,128 +1,117 @@
 
-function showLoginForm()
-{
+// Show login modal
+function showLoginForm() {
     templateBuilder.build('login-form', {}, 'login');
 }
 
-function hideModalForm()
-{
+// Hide login modal
+function hideModalForm() {
     templateBuilder.clear('login');
 }
 
-function login()
-{
-    const username = document.getElementById("username").value;
+// Attempt user login
+function login() {
+    const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value;
 
+    if (!username || !password) {
+        showError("Username and password are required.");
+        return;
+    }
+
     userService.login(username, password);
-    hideModalForm()
+    hideModalForm();
 }
 
-function showImageDetailForm(product, imageUrl)
-{
-    const imageDetail = {
-        name: product,
-        imageUrl: imageUrl
-    };
-
-    templateBuilder.build('image-detail',imageDetail,'login')
+// Show product image in a modal
+function showImageDetailForm(product, imageUrl) {
+    templateBuilder.build('image-detail', { name: product, imageUrl }, 'login');
 }
 
-function loadHome()
-{
-    templateBuilder.build('home',{},'main')
-
+// Load home screen
+function loadHome() {
+    templateBuilder.build('home', {}, 'main');
     productService.search();
     categoryService.getAllCategories(loadCategories);
 }
 
-function editProfile()
-{
+// Profile handling
+function editProfile() {
     profileService.loadProfile();
 }
 
-function saveProfile()
-{
-    const firstName = document.getElementById("firstName").value;
-    const lastName = document.getElementById("lastName").value;
-    const phone = document.getElementById("phone").value;
-    const email = document.getElementById("email").value;
-    const address = document.getElementById("address").value;
-    const city = document.getElementById("city").value;
-    const state = document.getElementById("state").value;
-    const zip = document.getElementById("zip").value;
-
+function saveProfile() {
     const profile = {
-        firstName,
-        lastName,
-        phone,
-        email,
-        address,
-        city,
-        state,
-        zip
+        firstName: getValue("firstName"),
+        lastName: getValue("lastName"),
+        phone: getValue("phone"),
+        email: getValue("email"),
+        address: getValue("address"),
+        city: getValue("city"),
+        state: getValue("state"),
+        zip: getValue("zip")
     };
 
     profileService.updateProfile(profile);
 }
 
-function showCart()
-{
+// Cart handling
+function showCart() {
     cartService.loadCartPage();
 }
 
-function clearCart()
-{
+function clearCart() {
     cartService.clearCart();
     cartService.loadCartPage();
 }
 
-function setCategory(control)
-{
+// Filter handling
+function setCategory(control) {
     productService.addCategoryFilter(control.value);
     productService.search();
-
 }
 
-function setColor(control)
-{
+function setColor(control) {
     productService.addColorFilter(control.value);
     productService.search();
-
 }
 
-function setMinPrice(control)
-{
-    // const slider = document.getElementById("min-price");
-    const label = document.getElementById("min-price-display")
+function setMinPrice(control) {
+    const label = document.getElementById("min-price-display");
     label.innerText = control.value;
 
-    const value = control.value != 0 ? control.value : "";
-    productService.addMinPriceFilter(value)
+    const value = control.value !== "0" ? control.value : "";
+    productService.addMinPriceFilter(value);
     productService.search();
-
 }
 
-function setMaxPrice(control)
-{
-    // const slider = document.getElementById("max-price");
-    const label = document.getElementById("max-price-display")
+function setMaxPrice(control) {
+    const label = document.getElementById("max-price-display");
     label.innerText = control.value;
 
-    const value = control.value != 1500 ? control.value : "";
-    productService.addMaxPriceFilter(value)
+    const value = control.value !== "1500" ? control.value : "";
+    productService.addMaxPriceFilter(value);
     productService.search();
-
 }
 
-function closeError(control)
-{
-    setTimeout(() => {
-        control.click();
-    },3000);
+// Temporary error close
+function closeError(control) {
+    setTimeout(() => control.click(), 3000);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// Utility: Get trimmed input value
+function getValue(id) {
+    return document.getElementById(id).value.trim();
+}
 
-    loadHome();
-});
+// Optional: Simple error message helper
+function showError(message) {
+    const errorContainer = document.getElementById("errors");
+    errorContainer.innerHTML = `
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
+}
+
+document.addEventListener('DOMContentLoaded', loadHome);
