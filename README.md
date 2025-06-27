@@ -1,6 +1,6 @@
-# capstone-3
+# EASY SHOP - CAPSTONE 3 -
 
-Final Project from LTCA
+Full-Stack Application
 
 ## Overview
 
