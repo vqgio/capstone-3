@@ -9,9 +9,9 @@ capstone-3 is a full-stack web application developed as the final project for th
 ## Features
 
 - **User Authentication & Authorization**: Secure login and registration using JWT-based authentication.
-- **Profile Management**: Users can create and update their profiles (name, phone, email, address, etc.).
+- **Profile Management**: Users can create and update their profiles (name, phone, email, address, etc.)(IN PROGRESS).
 - **Product Catalog**: Browse products by category, color, and price range, with filtering options.
-- **Shopping Cart**: Add, view, and clear cart items; manage shopping sessions.
+- **Shopping Cart**: Add, view, and clear cart items; manage shopping sessions(IN PROGRESS).
 - **Admin Features**: (If implemented) Admin users can manage products and categories.
 - **Responsive UI**: Frontend built with JavaScript for dynamic interactions.
 
