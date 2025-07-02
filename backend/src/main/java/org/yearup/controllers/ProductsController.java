@@ -67,6 +67,7 @@ public class ProductsController
     {
         try
         {
+
             return productDao.create(product);
         }
         catch(Exception ex)
